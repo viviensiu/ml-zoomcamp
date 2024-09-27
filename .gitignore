@@ -1,3 +1,4 @@
 .env
 *_credentials.csv
 *accessKeys.csv
+.ipynb_checkpoints

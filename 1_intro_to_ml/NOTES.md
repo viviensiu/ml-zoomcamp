@@ -104,5 +104,12 @@ $y = Xw$, $y$: target, $X$: feature matrix, $w$: unknown weights,
 
     $X^{-1}y = \mathbb{I}_n w$, hence $w = X^{-1}y$
 
+### 1.9 Introduction to Pandas
+* See [here](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/01-intro/09-pandas.md) for course notes, Jupyter Notebook for Pandas examples.
+* Also see [DataCamp's Pandas cheat sheet](https://www.datacamp.com/community/blog/python-pandas-cheat-sheet).
 
+### 1.10 Summary
+See [summary notes here](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/01-intro/10-summary.md).
 
+### Homework
+* Module 1 [Homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/01-intro/homework.md)
