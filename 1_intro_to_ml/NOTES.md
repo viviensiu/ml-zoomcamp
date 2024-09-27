@@ -100,9 +100,9 @@ conda install numpy pandas scikit-learn seaborn jupyter
 * Inverse: The inverse matrix of $X$ is $X^{-1}$ where $X^{-1}X = \mathbb{I}_n$. Used for finding solutions, i.e. the weights to solve linear equations. Example: 
 $y = Xw$, $y$: target, $X$: feature matrix, $w$: unknown weights,
 
-$X^{-1}y = X^{-1}Xw$
+    $X^{-1}y = X^{-1}Xw$
 
-$X^{-1}y = \mathbb{I}_n w$, hence $ w = X^{-1}y$
+    $X^{-1}y = \mathbb{I}_n w$, hence $w = X^{-1}y$
 
 
 
