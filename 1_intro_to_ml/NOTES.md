@@ -75,4 +75,32 @@ Module 1 slides available [here](https://www.slideshare.net/slideshow/ml-zoomcam
     * Test the best model using test data.
     * Check scores between validation and test data.
 
+### 1.6 Environment Setup
+* See [course notes](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/01-intro/06-environment.md).
+* My virtual env:
+```bash
+conda create -n ml-zoomcamp-env python=3.12
+conda activate ml-zoomcamp-env
+conda install numpy pandas scikit-learn seaborn jupyter
+```
+* My AWS env: Refer to `.env`, `*_credentials.csv`, `*accessKeys.csv` within project folder (not available in Github repo).
+
+### 1.7 Introduction to Numpy
+* Sample matrix operations with Numpy can be found in [course notes](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/01-intro/07-numpy.md).
+* Also see [DataCamp's Numpy Cheat Sheet](https://www.datacamp.com/community/blog/python-numpy-cheat-sheet).
+
+### 1.8 Linear Algebra Refresher
+* Linear Algebra course notes, sample notebook available [here](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/01-intro/08-linear-algebra.md).
+* Vector operations: element-wise operations
+* Multiplication
+    * Vector-vector multiplication
+    * Matrix-vector multiplication
+    * Matrix-matrix multiplication
+* Identity matrix
+* Inverse: The inverse matrix of $X$ is $X^{-1}$ where $X^{-1}X = \mathbb{I}_n$. Used for finding solutions, i.e. the weights to solve linear equations. Example: 
+$ y = Xw$, $y$: target, $X$: feature matrix, $w$: unknown weights
+$ X^{-1}y = X^{-1}Xw$
+$ X^{-1}y = \mathbb{I}_n w$, hence $ w = X^{-1}y$
+
+
 
