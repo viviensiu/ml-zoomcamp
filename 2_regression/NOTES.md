@@ -19,3 +19,11 @@
 ### 2.3 Exploratory Data Analysis
 * Explore the car price distribution.
 * Perform log transformation to normalize car prices.
+
+### 2.4 Setting up the validation framework
+* Shuffle data and split into training, validation and test datasets.
+* Split target variable (car price) from these datasets.
+* Log transformation on target variables.
+
+### 2.5 Linear Regression
+* **Goal**: Given car data $(x_1, \ldots, x_n)$, find a function $g(x_i)$ predict the car price $\hat{y_i}$ for car $x_i$ that is close to actual car price $y$.
