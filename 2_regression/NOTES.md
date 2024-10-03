@@ -43,7 +43,12 @@
 * The weights and biases are then used to produce a set of predictions with the subset data.
 * The predictions and actual car prices are then compared in a histogram chart.
 
-### 2.9 Root Mean Squared Error RMSE
+### 2.9 - 2.10 Root Mean Squared Error RMSE
 * Goal: To measure the std deviation of the errors (difference between predictions and actual values).
 * Formula: $\displaystyle \text{RMSE} = \sqrt{\frac{1}{m}\sum_{i=1}^m(y_i - g(x_i))^2}$, $m$: total records in dataset.
+* RMSE is then applied onto training and validation dataset.
 
+### 2.11 Feature Engineering
+* Includes car age as a new feature for the subset data.
+* Train model and evaluate performance with RMSE and histogram chart.
+* 
