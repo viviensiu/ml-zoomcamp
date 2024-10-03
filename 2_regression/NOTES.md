@@ -31,5 +31,19 @@
 * To simplify the equation, prepend X (features) with all-ones vector to include the bias terms, so we could solve for $w$ using $y=X\cdot w$, where $w = w_0, w_1,\ldots, w_n$.
 * The solution is $w = X^{-1}y$, however this implies an assumption that $X$ is a square matrix, which in most cases it is not.
 * To ensure that we could find the inverse matrix, we need to ensure that the matrix itself is a square matrix.
-* Hence we first find the square matrix using $X^T X$, then solve the following:
-  $w = (X^T X)^{-1} X^T y$
+* Hence we first find the square matrix using Gram Matrix $X^T X$, then solve the following:
+  $w = (X^T X)^{-1} X^T y$.
+* The solution $w$ is then split into weights (biases removed) and biases (first column of $w$).
+
+### 2.8 Baseline model
+* The baseline model is defined using only features engine_hp, engine_cylinders, highway_mpg, city_mpg, popularity.
+* A subset of training data with only these features is used as training data.
+* Missing values in the subset are set to 0.
+* Training is done using linear regression from previous section 2.5 - 2.7.
+* The weights and biases are then used to produce a set of predictions with the subset data.
+* The predictions and actual car prices are then compared in a histogram chart.
+
+### 2.9 Root Mean Squared Error RMSE
+* Goal: To measure the std deviation of the errors (difference between predictions and actual values).
+* Formula: $\displaystyle \text{RMSE} = \sqrt{\frac{1}{m}\sum_{i=1}^m(y_i - g(x_i))^2}$, $m$: total records in dataset.
+

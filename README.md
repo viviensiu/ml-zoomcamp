@@ -12,3 +12,6 @@ Repo for my ML-zoomcamp course materials.
 
 ### Credits
 Materials and learning resources belongs to [DataTalksClub's ML Zoomcamp](https://github.com/DataTalksClub/machine-learning-zoomcamp).
+
+### Extra Reading
+* The elements of Statistical Learning - Friedman, Tibshirani, Hastie
