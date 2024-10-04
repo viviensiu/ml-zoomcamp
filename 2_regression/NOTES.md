@@ -51,4 +51,30 @@
 ### 2.11 Feature Engineering
 * Includes car age as a new feature for the subset data.
 * Train model and evaluate performance with RMSE and histogram chart.
-* 
+
+### 2.12 Categorical Variables
+* Discrete values in data usually and a limited set of unique values, typically alphanumeric but numeric is also common.
+
+### 2.13 - 2.14 Regularization and tuning the model
+* An inverse of the Gram matrix may not exist due to duplicate columns, i.e. non linearly-independent columns within the matrix. These are usually known as singular matrices, i.e. matrix without inverse matrix.
+* Due to noise in dataset, it may be possible to have columns that are very similar in values but would not throw off the singular matrix error.
+* To mitigate this, a regularization factor $\alpha\mathbb{I}$ is added to the Gram Matrix.
+* $w = (X^T X + \lambda\mathbb{I})^{-1} X^T y$
+* Further reading: [Regularization in Regression](https://datatalks.club/blog/regularization-in-regression.html)
+* A range of different regularization factors are experimented on and a final factor is then decided based on the resulting RMSE.
+
+### 2.15 Using the model
+* Predict using a test record.
+* Convert car price from log form to usual form by taking exponents.
+
+### 2.16 Summary
+* We prepare our data and understand it better using EDA.
+* We split our data into training, validation and test sets.
+* We use a baseline model to train a linear regression model.
+* We evaluate model performance using RMSE.
+* We try to improve the model using feature engineering and regularization.
+* We evaluate again the model performance and decided on the final model.
+* We predict car price from test data using the final model.
+
+### Homework
+* Module 2 [Homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/02-regression/homework.md)
