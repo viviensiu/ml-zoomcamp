@@ -11,3 +11,18 @@
 
 ### 3.3 Setting up the validation framework
 * Split dataset into train, validation, test using sklearn package.
+
+### 3.4 EDA
+* Check on missing values, churn statistics and categorical values.
+* The **churn rate** can be calculated using mean since churn $\in \{0,1\}$, hence mean $\frac{1}{n}\sum_i x_i$ only takes the percentage of customers who churned in the dataset.
+
+### 3.5 Feature importance
+* Investigate on the churn rate by groups within a category v.s. global churn rate (from 3.4).
+* Metrics used: 
+    * difference = global - group. Difference < 0 represents higher likelihood to churn.
+    * risk ratio = group/global. Risk ratio > 1 represents higher likelihood to churn.
+* 
+### 3.6 Mutual Information (MI)
+* Further reading: [Wikipedia Mutual Information](https://en.wikipedia.org/wiki/Mutual_information)
+* In information theory, MI measures the mutual independence between two variables.
+* This gives a more uniform metric when we compare the feature importance between feature variables and the churn.
