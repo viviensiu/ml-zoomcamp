@@ -14,7 +14,7 @@
 
 ### 3.4 EDA
 * Check on missing values, churn statistics and categorical values.
-* The **churn rate** can be calculated using mean since churn $\in \{0,1\}$, hence mean $\frac{1}{n}\sum_i x_i$ only takes the percentage of customers who churned in the dataset.
+* The **churn rate** can be calculated using mean since churn $\in \{0,1\}$, hence mean $= \displaystyle \frac{1}{n}\sum_i x_i$ only takes the percentage of customers who churned in the dataset.
 
 ### 3.5 Feature importance
 * Investigate on the churn rate by groups within a category v.s. global churn rate (from 3.4).
