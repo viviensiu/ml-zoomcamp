@@ -26,3 +26,14 @@
 * Further reading: [Wikipedia Mutual Information](https://en.wikipedia.org/wiki/Mutual_information)
 * In information theory, MI measures the mutual independence between two variables.
 * This gives a more uniform metric when we compare the feature importance between feature variables and the churn.
+
+### 3.7 Correlation
+* Correlation coefficient $\phi$ lies in $-1 \le \phi \le 1]$, where if the signs are disregarded, having correlation values of:
+    * 0.0 - 0.2: low correlation
+    * 0.2 - 0.5: moderate correlation
+    * 0.6 - 1.0: high correlation
+* This metric is evaluated between numerical variables, in classification, we usually have the target $y \in \{0,1\}, x \in \mathbb{R}$.
+
+### 3.8 One-Hot Encoding
+* A technique to encode categorical features, where each unique value in a category is converted into its own categorical feature using 0 and 1 as values.
+
