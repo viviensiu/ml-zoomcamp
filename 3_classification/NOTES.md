@@ -48,5 +48,6 @@
 | 0 | 1 |
 |---|---|
 |$\mathbb{P}(\hat{y}=0)$|$\mathbb{P}(\hat{y}=1)$|
+
 Note that for each row, the total probability adds up to 1.
 * Depending on the use case, one could pick either the first value (so that prediction is likely 0) or second value (prediction is likely 1) to be the prediction result.
