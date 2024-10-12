@@ -37,3 +37,16 @@
 ### 3.8 One-Hot Encoding
 * A technique to encode categorical features, where each unique value in a category is converted into its own categorical feature using 0 and 1 as values.
 
+### 3.9 Logistic Regression
+* $g(x_i) = \sigma(w_0 + w^T x_i)$ converts the linear regression from a range of $(-\infty, \infty)$ to (-1,1) via the sigmoid function $\sigma$.
+* $\sigma(z) = \displaystyle\frac{1}{1+\exp(-z)}$
+
+### 3.10 Training Logistic Regression with Scikit-Learn
+* Train a logistic regression model with Sklearn and perform soft predictions using predict_proba().
+* predict_proba() produces a list of 2 values for each prediction: 
+
+| 0 | 1 |
+|---|---|
+|$\mathbb{P}(\hat{y}=0)$|$\mathbb{P}(\hat{y}=1)$|
+Note that for each row, the total probability adds up to 1.
+* Depending on the use case, one could pick either the first value (so that prediction is likely 0) or second value (prediction is likely 1) to be the prediction result.
