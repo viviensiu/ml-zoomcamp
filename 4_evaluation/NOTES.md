@@ -28,9 +28,9 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
 | FN | TP | actual=positive |
 
 ### Precision & Recall
-* Precision: fraction of positive examples that are correctly identified where $\text{precision} = \displaystyle\frac{TP}{\text{#predicted positives}} = \frac{TP}{TP+FP}$
-* Recall: fraction of true positives that are correctly identified where $\text{recall} = \displaystyle\frac{TP}{\text{#actual positives}} = \frac{TP}{TP+FN}$
-* Accuracy: $\text{accuracy} = \displaystyle\frac{TP+TN}{TP+TN+FP+FN}$
+* Precision: fraction of positive examples that are correctly identified where $\text{ precision} = \displaystyle\frac{TP}{\text{predicted positives}} = \frac{TP}{TP+FP}$
+* Recall: fraction of true positives that are correctly identified where $\text{ recall} = \displaystyle\frac{TP}{\text{actual positives}} = \frac{TP}{TP+FN}$
+* Accuracy: $\text{ accuracy} = \displaystyle\frac{TP+TN}{TP+TN+FP+FN}$
 * It's important to figure out the precision and recall because for our use case, although the accuracy is 80%, the precision is only 67% and recall is 54%.
 * This implies that for precision = 67%, 33% customers that would not churn are getting promotional emails.
 * For recall = 54%, it means 46% of customers that would churn are not getting promotional emails, which doesn't help since the promotional campaign is missing 46% of its target customers! 
