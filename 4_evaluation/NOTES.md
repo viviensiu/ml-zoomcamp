@@ -15,15 +15,15 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
     * `accuracy_score(x, y)` - sklearn.metrics class for calculating the accuracy of a model, given a predicted `x` dataset and a target `y` dataset.
 
 ### Confusion Matrix
-* True positive: both predictions and actual value are positive.
-* True negative: both predictions and actual value are negative.
-* False positive: predicted positive but actual value is negative.
-* False negative: predicted negative but actual value is positive.
-* Structure of confusion matrix (x-axis: prediction, y-axis: actual):
+* True positive (TP): both predictions and actual value are positive.
+* True negative (TN): both predictions and actual value are negative.
+* False positive (FP): predicted positive but actual value is negative.
+* False negative (FN): predicted negative but actual value is positive.
+* Structure of confusion matrix:
 
-| negative | positive | |
+|  predict=negative | predict=positive | |
 |----------|----------|-|
-| TN | FP | negative |
-| FN | TP | positive |
+| TN | FP | actual=negative |
+| FN | TP | actual=positive |
 
 ### Precision & Recall
