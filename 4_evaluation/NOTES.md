@@ -9,3 +9,21 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
 * To see if we have the optimal accuracy at 0.5 threshold, we evaluate different accuracies on churn thresholds at 0, 0.05, 0.10 .... 0.95, 1. 
 * **Dummy model**: model that gives a constant prediction, such as all true or all false values.
 * Notice that when we make a dummy prediction that all records will not churn, i.e. churn = 0, the accuracy equals 72.6%, which is not too different from 80.2% (where the threshold is set at 0.5). In other words, there is not much of an improvement from making a dummy prediction compared to using a threshold.
+* Classes and methods:
+    * `np.linspace(x,y,z)` - returns a numpy array starting at `x` until `y` with `z` evenly spaced samples
+    * `Counter(x)` - collection class that counts the number of instances that satisfy the x condition
+    * `accuracy_score(x, y)` - sklearn.metrics class for calculating the accuracy of a model, given a predicted `x` dataset and a target `y` dataset.
+
+### Confusion Matrix
+* True positive: both predictions and actual value are positive.
+* True negative: both predictions and actual value are negative.
+* False positive: predicted positive but actual value is negative.
+* False negative: predicted negative but actual value is positive.
+* Structure of confusion matrix (x-axis: prediction, y-axis: actual):
+
+| negative | positive | |
+|----------|----------|-|
+| TN | FP | negative |
+| FN | TP | positive |
+
+### Precision & Recall
