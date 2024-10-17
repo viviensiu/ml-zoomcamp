@@ -49,10 +49,12 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
 | $y=0$ | TN | FP | $FPR = \frac{FP}{TN+FP}$ |
 | $y=1$ | FN | TP | $TPR = \frac{TP}{FN+TP}$ |
 
-* The goal is to **minimise FPR** and to **maximise TPR**. We plot threshold v.s. TPR and FPR to evaluate these two values, since the slopes tell us how quickly FPR minimise and TPR maximise for each threshold in a classification model.
+* The goal is to **minimise FPR** and to **maximise TPR**. We plot the ROC curves (threshold v.s. TPR and FPR) to evaluate these two values, since the slopes tell us how quickly FPR minimise and TPR maximise for each threshold in a classification model.
+* ROC curves consider Recall and FPR under all the possible thresholds. If the threshold is 0 or 1, the FPR and Recall scores are the opposite of the threshold (1 and 0 respectively), but they have different meanings, as we explained before.
 * **Baseline curve**: random model which draws prediction in $[0,1]$ from a uniform distribution.
 * **Ideal curve**: Ideal model with 100% accuracy predictions.
-* Scikit-learn has a `roc_curve(actual, predictions)` that returns `fpr, tpr, thresholds`.
+* We need to compare the ROC curves against a point of reference to evaluate its performance, so the corresponding curves of random and ideal models are required. It is possible to plot the ROC curves with FPR and Recall scores vs thresholds, or FPR vs Recall.
+* `Scikit-learn` has a `roc_curve(actual, predictions)` that returns `fpr, tpr, thresholds`.
 
 ### 4.6 ROC-AUC
 * Area Under the Curve (AUC)
