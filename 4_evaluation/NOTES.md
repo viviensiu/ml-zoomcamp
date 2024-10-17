@@ -14,7 +14,7 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
     * `Counter(x)` - collection class that counts the number of instances that satisfy the x condition
     * `accuracy_score(x, y)` - sklearn.metrics class for calculating the accuracy of a model, given a predicted `x` dataset and a target `y` dataset.
 
-### Confusion Matrix
+### 4.3 Confusion Matrix
 * True positive (TP): both predictions and actual value are positive.
 * True negative (TN): both predictions and actual value are negative.
 * False positive (FP): predicted positive but actual value is negative.
@@ -27,7 +27,7 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
 | TN | FP | actual=negative |
 | FN | TP | actual=positive |
 
-### Precision & Recall
+### 4.4 Precision & Recall
 * Precision: fraction of positive examples that are correctly identified where $\text{ precision} = \displaystyle\frac{TP}{\text{predicted positives}} = \frac{TP}{TP+FP}$
 * Recall: fraction of true positives that are correctly identified where $\text{ recall} = \displaystyle\frac{TP}{\text{actual positives}} = \frac{TP}{TP+FN}$
 * Accuracy: $\text{ accuracy} = \displaystyle\frac{TP+TN}{TP+TN+FP+FN}$
@@ -39,3 +39,20 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
     * Precision : From the `pre`dicted positives, how many we predicted right. See how the word `pre`cision is similar to the word `pre`diction?
     * Recall : From the `real` positives, how many we predicted right. See how the word `re`call is similar to the word `real`?
 
+### 4.5 ROC Curves
+* Receiver Operating Characteristics (ROC). We're interested in the following:
+    * **False Positive Rate (FPR)** = fraction of false positives over all actual negatives $y=0$ (false positive + true negative).
+    * **True Positive Rate (TPR)**, a.k.a **Recall** = fraction of true positives over all actual positives $y=1$ (false negative + true positive).
+
+| |  $\hat{y}=0$ | $\hat{y}=1$ | |
+|-|----------|----------|-|
+| $y=0$ | TN | FP | $FPR = \frac{FP}{TN+FP}$ |
+| $y=1$ | FN | TP | $TPR = \frac{TP}{FN+TP}$ |
+
+* The goal is to **minimise FPR** and to **maximise TPR**. We plot threshold v.s. TPR and FPR to evaluate these two values, since the slopes tell us how quickly FPR minimise and TPR maximise for each threshold in a classification model.
+* **Baseline curve**: random model which draws prediction in $[0,1]$ from a uniform distribution.
+* **Ideal curve**: Ideal model with 100% accuracy predictions.
+* Scikit-learn has a `roc_curve(actual, predictions)` that returns `fpr, tpr, thresholds`.
+
+### 4.6 ROC-AUC
+* Area Under the Curve (AUC)
