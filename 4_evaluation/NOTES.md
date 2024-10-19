@@ -58,3 +58,25 @@ The fourth week of Machine Learning Zoomcamp is about different metrics to evalu
 
 ### 4.6 ROC-AUC
 * Area Under the Curve (AUC)
+* The Area under the ROC curves can tell us how good is our model with a single value. The AUROC of a random model is 0.5, while for an ideal one is 1.
+* The goal is to maximise AUC since we want to have a proportion of correctly classified positive samples (TPR) that is **greater than** the proportion of erroneously classified positive samples (FPR).
+* From the ROC plot, using the baseline where TPR = FPR, we want to produce a model that gives a ROC curve that rests in the area where **TPR > FPR**.
+* In other words, AUC can be interpreted as the probability that a randomly selected positive example has a greater score than a randomly selected negative example.
+* Classes and methods:
+    * `auc(x, y)` - `sklearn.metrics` class for calculating area under the curve of the x and y datasets. For ROC curves x would be false positive rate, and y true positive rate.
+    * `roc_auc_score(x, y)` - `sklearn.metrics` class for calculating area under the ROC curves of the x false positive rate and y true positive rate datasets.
+* See also [ROC and AUC, Clearly Explained!](https://youtu.be/4jRBRDbJemM?si=UhDQjXfYhlhRLHB7)
+
+### 4.7 Cross-validation
+* To ensure that the model's performance is not just a coincidence by taking a particular training set, the same model is evaluated using `cross-validation` to find out the average performance (score) of the model. 
+* Method:
+    * Takes the training dataset and split it into k subsets, a.k.a `k-folds`.
+    * For each fold from $k = 1 \ldots k$, train a model without the `k-th`subset and then evaluate the model using `k-th`subset. Compute the AUC score for each subset.
+    * Take the mean and standard deviation of the aggregated AUC scores. Ideally we want a small std dev.
+* Libraries, classes and methods:
+    * `Kfold(k, s, x)` - `sklearn.model_selection` class for calculating the cross validation with k folds, s boolean attribute for shuffle decision, and an x random state
+    * `Kfold.split(x)` - `sklearn.Kfold` method for splitting the x dataset with the attributes established in the Kfold's object construction.
+    * `for i in tqdm()` - library for showing the progress of each i iteration in a for loop.
+
+### Homework
+* Module 4 [Homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/04-evaluation/homework.md)
