@@ -26,9 +26,24 @@
     * For more information just google the HTTP methods, You'll find useful information about this.
 * We can use `Flask` to create a web service (others are also available, e.g. `Django`, `FastAPI`). 
     * First, `pip install flask`.
-    * See example [`ping.py`]() for more details on using Flask.
+    * See example [`ping.py`](https://github.com/viviensiu/ml-zoomcamp/blob/main/5_deployment/ping.py) for more details on using Flask.
     * In CLI, type `python ping.py` and access the web service using `127.0.0.1:9696/ping`.
+    * Press ctrl+C to quit running the web service.
 * References:
     * [0.0.0.0 v.s. localhost v.s. 127.0.0.1](https://stackoverflow.com/a/20778887/861423)
     * [Top-level script environment](https://docs.python.org/3.9/library/__main__.html)
     * [Flask app.route()](https://flask.palletsprojects.com/en/2.2.x/api/#flask.Flask.route)
+
+### 5.4 Serving the Churn Model with Flask
+* See [`predict.py`](https://github.com/viviensiu/ml-zoomcamp/blob/main/5_deployment/predict.py) for detailed notes on `request` and `jsonify`.
+* Once app is served using `python predict.py`, you could post a customer info in JSON format to make predictions using either another script, a Jupyter notebook or [Postman API](https://www.postman.com/).
+* Note that Flask by default is served in development server and you will see a warning `WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.`.
+* Hence, one way to serve in production is by using `gunicorn`: `pip install gunicorn`.
+* Then, serve using gunicorn by binding the url to the Flask app: `gunicorn --bind 0.0.0.0:9696 predict:app`. You could retest prediction as per point 2 above.
+* **NOTE**: `gunicorn — bind` means it is being attached to a URL that the application can be reached. In this case, the many zeroes or 0.0.0.0 means localhost, and the 9696 is the port number specified in `predict.py` > `app.run()`. The application can be reached locally at `localhost:9696`. Lastly, the name of the flask_file followed by `:app` must be specified for Gunicorn to know, what Python files are being run.
+* **NOTE**: Stop Flask app before serve the app using `gunicorn`.
+* References:
+    * [flask.request to process incoming JSON from POST method](https://tedboy.github.io/flask/generated/generated/flask.Request.html)
+    * [flask.jsonify to send response in JSON format](https://tedboy.github.io/flask/generated/flask.jsonify.html)
+    * [gunicorn: Python Web Server Gateway Interface (WSGI)](https://gunicorn.org/)
+    * [How to Run Gunicorn in the Python Microframework Flask](https://medium.com/@andrewdass/how-to-run-gunicorn-in-the-python-microframework-flask-32a41abe2755)
