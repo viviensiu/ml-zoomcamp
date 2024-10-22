@@ -67,7 +67,7 @@
 * To isolate more our project file from our system machine, there is an option named Docker. With Docker you are able to pack all your project is a system that you want and run it in any system machine. For example if you want Ubuntu 20.4 you can have it in a mac or windows machine or other operating systems.
 * To get started with Docker for the churn prediction project you can follow the instructions below.
     * Install Docker, see [Docker Installation](https://docs.docker.com/engine/install/).
-    * Setup a Dockerfile that setup the container's environment, dependencies. Refer this [Dockerfile] for this module.
+    * Setup a Dockerfile that setup the container's environment, dependencies. Refer this [Dockerfile](https://github.com/viviensiu/ml-zoomcamp/blob/main/Dockerfile) for this module.
     * Build the Docker image using the Dockerfile created from previous step: `docker build -t churn_prediction .`
     * Start a Docker container with the built image: `docker run -it -p 9696:9696 --name predict_app churn_prediction:latest`.
     * Open a separate terminal to test using a Python script `predict-test.py`. In this new terminal, access the container using `docker exec -it predict_app bash`. This opens a bash terminal inside this container.
