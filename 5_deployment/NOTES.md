@@ -47,3 +47,35 @@
     * [flask.jsonify to send response in JSON format](https://tedboy.github.io/flask/generated/flask.jsonify.html)
     * [gunicorn: Python Web Server Gateway Interface (WSGI)](https://gunicorn.org/)
     * [How to Run Gunicorn in the Python Microframework Flask](https://medium.com/@andrewdass/how-to-run-gunicorn-in-the-python-microframework-flask-32a41abe2755)
+
+### 5.5 Python Virtual Environment: Pipenv
+* Every time we're running a file from a directory we're using the executive files from a global directory. For example when we install python on our machine the executable files that are able to run our codes will go to somewhere like `/home/username/python/bin/` for example the pip command may go to `/home/username/python/bin/pip`.
+* Sometimes the **versions** of libraries **conflict** (the project may not run or get into massive errors). For example we have an old project that uses sklearn library with the version of 0.24.1 and now we want to run it using sklearn version 1.0.0. We may get into errors because of the version conflict.
+* To solve the conflict we can make **virtual environments**. Virtual environment is something that can separate the libraries installed in our system and the libraries with specified version we want our project to run with. There are a lot of ways to create a virtual environments: `venv`, `conda`, `poetry`. One way we are going to use is using a library named `pipenv`.
+* `pipenv` is a library that can create a virtual environment. To install this library just execute `pip install pipenv`.
+* After installing `pipenv` we must to install the libraries we want for our project in the new virtual environment. It's really easy, Just use the command `pipenv` instead of `pip`. 
+* Execute `pipenv install numpy sklearn==0.24.1 flask`. With this command we installed the libraries we want for our project.
+* Note that using the `pipenv` command we made two files named `Pipfile` and `Pipfile.lock`. If we look at this files closely we can see that in `Pipfile` the libraries we installed are named. If we specified the library name, it's also specified in `Pipfile`.
+* In `Pipfile.lock` we can see that each library with it's installed version is named and a hash file is there to reproduce if we move the environment to another machine.
+* If we want to run the project in another machine, we can easily installed the libraries we want with the command `pipenv install`. This command will look into `Pipfile` and `Pipfile.lock` to install the libraries with specified version.
+* After installing the required libraries we can run the project in the virtual environment with `pipenv shell` command. This will go to the virtual environment's shell and then any command we execute will use the virtual environment's libraries.
+* Installing and using the libraries such as `gunicorn` is the same as the last session.
+* If we don't want to start pipenv shell but want to run something in the same virtual env, we can use `pipenv run` command followed by the command to run something, for example to run jupyter notebook we can do `pipenv run jupyter notebook`.
+* Until here we made a virtual environment for our libraries with a required specified version. To separate this environment more, such as making gunicorn be able to run in windows machines we need another way. The other way is using Docker. Docker allows us to seperate everything more than before and make any project able to run on any machine that support Docker smoothly.
+
+### 5.6 Environment Management: Docker
+* To isolate more our project file from our system machine, there is an option named Docker. With Docker you are able to pack all your project is a system that you want and run it in any system machine. For example if you want Ubuntu 20.4 you can have it in a mac or windows machine or other operating systems.
+* To get started with Docker for the churn prediction project you can follow the instructions below.
+    * Install Docker, see [Docker Installation](https://docs.docker.com/engine/install/).
+    * Setup a Dockerfile that setup the container's environment, dependencies. Refer this [Dockerfile] for this module.
+    * Build the Docker image using the Dockerfile created from previous step: `docker build -t churn_prediction .`
+    * Start a Docker container with the built image: `docker run -it -p 9696:9696 --name predict_app churn_prediction:latest`.
+    * Open a separate terminal to test using a Python script `predict-test.py`. In this new terminal, access the container using `docker exec -it predict_app bash`. This opens a bash terminal inside this container.
+    * In the bash terminal, execute: `python predict-test.py`. If it works, you should see:
+    ```bash
+    {'churn': False, 'churn_probability': 0.3394003337110859}
+    not sending promo email to xyz-123
+    ```
+    * Quit bash by pressing CTRL-D. 
+    * Stop the running container with `docker stop predict_app`.
+
