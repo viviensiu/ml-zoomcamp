@@ -79,3 +79,33 @@
     * Quit bash by pressing CTRL-D. 
     * Stop the running container with `docker stop predict_app`.
 
+### 5.7 Deployment To The Cloud: AWS Elastic Beanstalk (Optional)
+* Benefits: AWS EB provides auto-scaling (horizontal) on the Docker containers deployed to handle traffic fluctuations.
+* Setup:
+    * `pipenv install awsebcli --dev`, `--dev` is to ensure we only install this in development environment and not include this for the production.
+    * Start virtual env: `pipenv shell`.
+    * Start EB using `eb init`. Then:
+        * Choose your region.
+        * Provide your credentials using the AWS credentials saved in [Module 1.6](https://github.com/viviensiu/ml-zoomcamp/blob/main/1_intro_to_ml/NOTES.md#16-environment-setup).
+        * Enter application name.
+        * When prompted if you're using Docker, choose this option.
+        * reply 'n' to the rest.
+        * This creates a `.elasticbeanstalk` folder in your repo and you can see all the config you just did in `config.yml`
+* Then proceed to perform a local test to ensure EB works with your Docker using `eb local run --port 9696`. Then open another terminal, and locate the container name started by `eb` using `docker ps`.
+* Repeat the steps from Module 5.6:
+    * `docker exec -it <new container name> bash`.
+    * `python predict-test.app`
+    * exit using CTRL-D.
+* Create EB on cloud:
+    * `eb create churn-serving-env`: creates the production env. This will take a while.
+    * Once it says successfully created, copy the host url and modify your local `predict-test.py` to use this host url instead of localhost.
+* Terminate the EB env:
+    * Either login to your AWS account, go to EB and find this environment, then go to `Action` > `Terminate this environment`.
+    * Or terminate in virtual env using `eb terminate churn-serving-env`. Then confirm.
+* **NOTE**: I didn't manage to create the EB env successfully due to some AWS errors regarding load-balancing group. Anyways...
+* **HEROKU**: Refer [course notes on how to deploy to Heroku cloud](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/05-deployment/07-aws-eb.md).
+
+### Homework
+* Module 5 [Homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/05-deployment/homework.md)
+
+
