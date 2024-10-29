@@ -29,3 +29,30 @@
     * `DecisionTreeClassifier`: classification model from `sklearn.tree` class.
     * `max_depth`: hyperparameter to control the depth of decision tree algorithm.
     * `export_text`: method from `sklearn.tree` class to display the text report showing the rules of a decision tree.
+
+### 6.4 Decision Tree Learning Algorithm
+* **Terminologies**:
+    * `Nodes`: condition nodes that will split into 2 `leaves`.
+    * `Leaves`: decision nodes. For a split condition: feature > T (threshold), it splits into true and false leaves.
+* **Misclassification rate**: Used for checking how good our predictions are for a particular node. Say if we predict all records with assets <= 4000 would `default` and vice-versa `ok`, we look at how many actual values are same as the predictions in each class `default` and `ok`. If there are 4 predictions that fall under `default` class and it turns out that one actual value did not match this prediction, the misclassification rate would be $\frac{1}{4}$, i.e. the fraction of errors.
+* Hence misclassification rate is useful to evaluate the quality of the split at each node.
+* **NOTE**: misclassification rate is also called `impurity`.
+* To find the best split condition, we set a range of T values and compute the average impurity for each T. The T with the lowest average impurity is the optimal T for best split condition.
+* **Finding the best split algorithm**
+    * For F in features:
+        * Find all thresholds for F.
+        * For T in thresholds:
+            * Split dataset using "F > T" condition.
+            * Compute the impurity of this split.
+    * Select the condition with the lowest impurity.
+* **Stopping criteria**:
+    * Group already pure.
+    * Tree reached depth limit.
+    * Stop splitting when remaining group too small to split.
+* **Decision Tree Algorithm**:
+    * Find the best split.
+    * Check if max depth is reached.
+    * If left is sufficiently large and not pure yet:
+        * Repeat for left.
+    * If right is sufficiently large and not pure yet:
+        * Repeat for right.
