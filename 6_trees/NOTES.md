@@ -56,3 +56,21 @@
         * Repeat for left.
     * If right is sufficiently large and not pure yet:
         * Repeat for right.
+
+### 6.5 Decision Trees Parameter Tuning
+* Two hyperparameters of `DecisionTreeClassifier` classifier are important for hyperparameter tuning: `max_depth` and `min_samples_leaf`.
+* `min_samples_leaf`: indicates the minimum number of samples required to split an internal node. By setting a minimum number of samples required at a leaf node, we can prevent the tree from creating overfitting by creating branches with very few samples.
+* The different combinations of hyperparameters values are fitted into the model and evaluated on the validation set using AUC scores.
+* A heatmap could also be used to visualize quickly which AUC score is the best across the hyperparameters' values.
+
+### 6.6 Ensemble Learning and Random Forest
+* Emsemble learning: Having an emsemble of trained (differently) models to make a collective decision instead of letting one trained model make a decision.
+* Random Forest is an example of ensemble learning where there are a `n_estimators` of decision tree model being used. These decision tree models are trained independently using different subset of features, and their predictions are aggregated to identify the most popular result. 
+* Since Random Forest only select a **random subset of features** from the original data to make predictions, hence retraining the same model would result in different predictions and we need to set the `random_state` to keep the predictions constant.
+* Important hyperparameters:
+    * `n_estimators`: number of decision tree models used.
+    * `max_depth`: depth of the trees
+    * `min_sample_leaf` : min. number of samples required to split a node.
+    * `criterion`: evaluation criteria to evaluation the quality of the split of each node, hence affects the split conditions at each node.
+* Classes, functions, and methods:
+    * `from sklearn.ensemble import RandomForestClassifier`: random forest classifier from `sklearn` ensemble class.
