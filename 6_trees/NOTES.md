@@ -74,3 +74,54 @@
     * `criterion`: evaluation criteria to evaluation the quality of the split of each node, hence affects the split conditions at each node.
 * Classes, functions, and methods:
     * `from sklearn.ensemble import RandomForestClassifier`: random forest classifier from `sklearn` ensemble class.
+
+### 6.7 Gradient Boosting and XGBoost
+* Unlike Random Forest where each decision tree trains independently, in the Gradient Boosting Trees, the models are combined **sequentially**, where each model takes the prediction errors made by the previous model and then tries to improve the prediction. This process continues to n number of iterations, and in the end, all the predictions get combined to make the final prediction.
+* XGBoost is one of the libraries which implements the gradient boosting technique. To make use of the library, we need to install with `pip install xgboost`. 
+* To train and evaluate the xgboost model, we need to wrap our train and validation data into a special data structure from XGBoost which is called `DMatrix`. This data structure is optimized to train XGBoost models faster.
+* XGBoost Training Parameters
+    * `eta`: learning rate, which indicates how fast the model learns.
+    * `max_depth`: to control the size of the trees.
+    * `min_child_weight`: to control the minimum size of a child node.
+    * `objective`: To specify which problem we are trying to solve, either regression, or classification (binary: `binary:logistic`, or other).
+    * `nthread`: used for parallelized training. Usually you specify values equal to the num. of cores your workstation has/able to provision.
+    * `seed`: 1, for reproducibility like random states.
+    * `verbosity`: `0` for showing errors only. `1`  to show warnings and above, `2` to include info display, if any, during model training.
+* Classes, functions, and methods:
+    * `xgb.train()`: method to train xgboost model.
+    * `xgb_params`: key-value pairs of hyperparameters to train xgboost model.
+    * `eval_metric`: evaluation metrics for validation data.
+    * `num_boost_round`: equivalent to `n_estimators` in Random Forest, i.e. the num. of tree models used.
+    * `verbose_eval`: frequency of printing out the evaluation results during training and validation. E.g. if `verbose_eval = 5` then the results are printed on every 5 rounds. Defaults to printing every round.
+    * `%%capture output`: IPython magic command which captures the standard output and standard error of a cell.
+* Extracting results from `xgb.train(..)`:
+    * In the video we use jupyter magic command `%%capture output` to extract the output of xgb.train(..) method.
+    * Alternatively you can use the evals_result parameter of the xgb.train(..). You can pass an empty dictionary in for this parameter and the `train()` method will populate it with the results. The result will be of type `OrderedDict` so we have to transform it to a dataframe. For this, `zip()` can help. 
+* References:
+    * [Introduction to Boosted Trees](https://xgboost.readthedocs.io/en/release_0.80/tutorials/model.html)
+    * [DMatrix v.s. Pandas](https://stackoverflow.com/questions/70127049/what-is-the-use-of-dmatrix)
+    * [XGBoost parameters](https://xgboost.readthedocs.io/en/stable/parameter.html)
+
+### 6.8 XGBoost Parameter Tuning
+* XGBoost has various tuneable parameters but the three most important ones are:
+    * `eta (default=0.3)`: It is also called learning_rate and is used to prevent overfitting by regularizing the weights of new features in each boosting step. range: [0, 1].
+    * `max_depth (default=6)`: Maximum depth of a tree. Increasing this value will make the model more complex and more likely to overfit. range: [0, inf].
+    * `min_child_weight (default=1)`: Minimum number of samples in leaf node. range: [0, inf].
+* Other useful parameter are:
+    * `subsample (default=1)`: Subsample ratio of the training instances. Setting it to 0.5 means that model would randomly sample half of the training data prior to growing trees. range: (0, 1]
+    * `colsample_bytree (default=1)`: This is similar to random forest, where each tree is made with the subset of randomly choosen features.
+    * `lambda (default=1)`: Also called `reg_lambda`. L2 regularization term on weights. Increasing this value will make model more conservative.
+    * `alpha (default=0)`: Also called `reg_alpha`. L1 regularization term on weights. Increasing this value will make model more conservative.
+
+### 6.9 Selecting the best model
+* We select the final model from decision tree, random forest, or xgboost based on the best auc scores. After that we prepare the df_full_train and df_test to train and evaluate the final model. If there is not much difference between model auc scores on the train as well as test data then the model has generalized the patterns well enough.
+* Generally, XGBoost models perform better on tabular data than other machine learning models but the downside is that these model are easy to overfit cause of the high number of hyperparameter. Therefore, XGBoost models require a lot more attention for parameters tuning to optimize them.
+
+### 6.10 Summary
+* Decision trees learn if-then-else rules from data. Can overfit easily.
+* Finding the best split: select the least impure split. This algorithm can overfit, that's why we control it by limiting the `max depth` and the size of the group (`min_sample_leaf`).
+* Random forest is a way of combining multiple decision trees. It should have a diverse set of models to make good predictions. Uses **parallel training**.
+* Gradient boosting trains model **sequentially**: each model tries to fix errors of the previous model. XGBoost is an implementation of gradient boosting.
+
+### Homework
+* Module 6 [Homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/06-trees/homework.md)
