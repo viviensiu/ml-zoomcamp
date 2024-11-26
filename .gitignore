@@ -2,7 +2,7 @@
 *_credentials.csv
 *accessKeys.csv
 .ipynb_checkpoints
-*DS_Store
+.DS_Store
 *pycache*
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

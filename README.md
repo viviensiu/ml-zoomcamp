@@ -15,3 +15,4 @@ Materials and learning resources belongs to [DataTalksClub's ML Zoomcamp](https:
 
 ### Extra Reading
 * The elements of Statistical Learning - Friedman, Tibshirani, Hastie
+* [Stanford CS class CS231n: Convolutional Neural Networks for Visual Recognition.](https://cs231n.github.io/)
