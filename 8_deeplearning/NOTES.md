@@ -50,6 +50,8 @@ The convolution operation forms the basis of any CNN. In convolution operation, 
 * **Activation function layer**:
     * Once the feature maps are extracted, the next step is to move them to a activation function layer. There are different activation functions such as ReLU, Sigmoid, Softmax etc.
     * **ReLU (Rectified Linear Unit)** is an activation function which performs an element-wise operation and sets all the negative pixels to 0. It introduces non-linearity to the network, and the generated output is a rectified feature map. The relu function is: $f(x) = \max(0,x)$.
+    * **Sigmoid**: for binary classification. Values for each neuron in this layer sums to 1.
+    * **Softmax**: for multi-class classification. Values for each neuron in this layer sums to 1.
 * **Pooling layer**:
     * A down-sampling operation that reduces the dimensionality of the feature map. The rectified feature map goes through a pooling layer to generate a pooled feature map.
     * Imagine a rectified feature map of size 4x4 goes through a max pooling filter of 2x2 size with stride of 2. In this case, the resultant pooled feature map will have a pooled feature map of 2x2 size where each value will represent the maximum value of each stride.
@@ -65,3 +67,28 @@ The convolution operation forms the basis of any CNN. In convolution operation, 
     * Different pooling layers with various filters are used to identify specific parts of the image.
     * The pooled feature map is flattened and fed to a fully connected layer to get the final output.
 * References: [Learn CNN in the browser](https://poloclub.github.io/cnn-explainer/).
+
+### 8.5 Transfer Learning
+* A pretrained model is usually trained to predict a certain number of outputs.
+* For Keras Pretrained models, the CNN layers up till the vector representation are trained on general image classification filters and such. However in the Dense layers, these models are trained to predict the 1000 image classes as made available in ImageNet dataset.
+* For use cases which we want a model to make different predictions than the 1000 classes above but we want to keep the generic CNN layers that are quite useful in the model, we could use a method called **Transfer Learning**. 
+* What **Transfer Learning** does is it keeps the CNN layers together with the filters up till vector representation layer, but discard the Dense layers so we could customise the model to perform predictions that apply to our own use cases.
+* Note that the **Transfer Learning** model needs to be retrained with our own specific dataset so it could make predictions pertaining to our use cases.
+```python
+# Build image generator for training (takes preprocessing input function)
+train_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+# Load in train dataset into train generator
+train_ds = train_gen.flow_from_directory(directory=path/to/train_imgs_dir, # Train images directory
+                                         target_size=(150,150), # resize images to train faster
+                                         batch_size=32) # 32 images per batch
+
+# Create image generator for validation
+val_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+# Load in image for validation
+val_ds = val_gen.flow_from_directory(directory=path/to/val_imgs_dir, # Validation image directory
+                                     target_size=(150,150),
+                                     batch_size=32,
+                                     shuffle=False) # False for validation
+```
