@@ -74,6 +74,7 @@ The convolution operation forms the basis of any CNN. In convolution operation, 
 * For use cases which we want a model to make different predictions than the 1000 classes above but we want to keep the generic CNN layers that are quite useful in the model, we could use a method called **Transfer Learning**. 
 * What **Transfer Learning** does is it keeps the CNN layers together with the filters up till vector representation layer, but discard the Dense layers so we could customise the model to perform predictions that apply to our own use cases.
 * Note that the **Transfer Learning** model needs to be retrained with our own specific dataset so it could make predictions pertaining to our use cases.
+* Steps to create train/validation data for model:
 ```python
 # Build image generator for training (takes preprocessing input function)
 train_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
@@ -92,3 +93,65 @@ val_ds = val_gen.flow_from_directory(directory=path/to/val_imgs_dir, # Validatio
                                      batch_size=32,
                                      shuffle=False) # False for validation
 ```
+* Steps to build model from a pretrained model, this focus on the Dense layers for custom predictions, note that at this step there's no training yet:
+```python
+# Build base model
+base_model = Xception(weights='imagenet',
+                      include_top=False, # to create custom dense layer
+                      input_shape=(150,150,3))
+
+# Freeze the convolutional base by preventing the weights being updated during training
+base_model.trainable = False
+
+# Define expected image shape as input
+inputs = keras.Input(shape=(150,150,3))
+
+# Feed inputs to the base model
+base = base_model(inputs, training=False) # set False because the model contains BatchNormalization layer
+
+# Convert matrices into vectors using pooling layer
+vectors = keras.layers.GlobalAveragePooling2D()(base)
+
+# Create dense layer of 10 classes for predictions
+# Note: NO ACTIVATION FUNCTION HERE, as we will include activation during training instead,
+# see next step for training
+outputs = keras.layers.Dense(10)(vectors)
+
+# Create model for training, takes in inputs and returns outputs as predictions
+model = keras.Model(inputs, outputs)
+```
+* Steps to instantiate optimizer and loss function to train the model:
+```python
+# Define learning rate
+learning_rate = 0.01
+
+# Create optimizer. Used for learning the weights during training
+optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+
+# Define loss function
+loss = keras.losses.CategoricalCrossentropy(from_logits=True) 
+# `from_logits=True`: to keep the raw output of dense layer without applying softmax
+# In the previous code block, notice that we did not use `activation` in Dense layer, 
+# hence the outputs are raw logits instead of probability outputs (e.g. softmax).
+
+# Compile the model
+model.compile(optimizer=optimizer,
+              loss=loss,
+              metrics=['accuracy']) # evaluation metric accuracy
+```
+* The model is ready to train once it is defined and compiled:
+```python
+# Train the model, validate it with validation data, and save the training history
+history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+```
+* Classes, function, and attributes:
+    * `from tensorflow.keras.preprocessing.image import ImageDataGenerator`: to read the image data and make it useful for training/validation.
+    * `flow_from_directory()`: method to read the images directly from the directory.
+    * `next(train_ds)`: to unpack features and target variables.
+    * `train_ds.class_indices`: attribute to get classes according to the directory structure.
+    * `GlobalAveragePooling2D()`: accepts 4D tensor as input and operates the mean on the height and width dimensionalities for all the channels and returns vector representation of all images.
+    * `CategoricalCrossentropy()`: method to produces a one-hot array containing the probable match for each category in multi classification.
+    * `epochs`: number of iterations over all of the training data.
+    * `history.history`: history attribute is a dictionary recording loss and metrics values (accuracy in our case) for at each epoch.
+* References: [Keras Optimizers](https://keras.io/api/optimizers/)
+
