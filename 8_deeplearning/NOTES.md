@@ -44,19 +44,20 @@ The convolution operation forms the basis of any CNN. In convolution operation, 
     * Activation function layer
     * Pooling layer
     * Fully connected layer (also called Dense layer)
-* Convolution layer: 
+* **Convolution layer**: 
     * Extracts valuable features from an image. A convolution layer has several filters that perform the convolution operation. Every image is considered as a matrix of pixel values.
     * Consider a black and white image of 5x5 size whose pixel values are either 0 or 1 and also a filter matrix with a dimension of 3x3. Next, slide the filter matrix over the image and compute the dot product to get the convolved feature matrix.
-* Activation function layer:
+* **Activation function layer**:
     * Once the feature maps are extracted, the next step is to move them to a activation function layer. There are different activation functions such as ReLU, Sigmoid, Softmax etc.
     * **ReLU (Rectified Linear Unit)** is an activation function which performs an element-wise operation and sets all the negative pixels to 0. It introduces non-linearity to the network, and the generated output is a rectified feature map. The relu function is: $f(x) = \max(0,x)$.
-* Pooling layer:
+* **Pooling layer**:
     * A down-sampling operation that reduces the dimensionality of the feature map. The rectified feature map goes through a pooling layer to generate a pooled feature map.
     * Imagine a rectified feature map of size 4x4 goes through a max pooling filter of 2x2 size with stride of 2. In this case, the resultant pooled feature map will have a pooled feature map of 2x2 size where each value will represent the maximum value of each stride.
     * The pooling layer uses various filters to identify different parts of the image like edges, shapes etc.
-* Fully Connected layer (Dense layer):
+* **Fully Connected layer (Dense layer)**:
     * The next step in the process is called flattening. Flattening is used to convert all the resultant 2D arrays from pooled feature maps into a single linear vector. This flattened vector is then fed as input to the fully connected layer to classify the image.
-* Convolutional Neural Networks in a nutshell
+    * `fully-connected` due to every neuron in the flattened layer is connected to every neuron in the next layer.
+* **CNN in a nutshell**:
     * The pixels from the image are fed to the convolutional layer that performs the convolution operation.
     * It results in a convolved map.
     * The convolved map is applied to a ReLU function to generate a rectified feature map.
