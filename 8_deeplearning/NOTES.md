@@ -23,3 +23,44 @@
     * `load_img('path/to/image', targe_size=(150,150))`: to load the image of 150 x 150 size in PIL format
     * `np.array(img)`: convert image into a numpy array of 3D shape, where each row of the array represents the value of red, green, and blue color channels of one pixel in the image.
 
+### 8.3 Pretrained Convolutional Neural Network
+* Keras provides a number of pretrained models which are mainly trained on [ImageNet](https://www.image-net.org/). [See here for all the Keras pretrained models](https://keras.io/api/applications/)
+* A pretrained model `Xception` will be used here. To do so,
+    * `from tensorflow.keras.applications.xception import Xception`: import the model from keras applications.
+    * `from tensorflow.keras.application.xception import preprocess_input`: function to perform preprocessing on images.
+    * `from tensorflow.keras.applications.xception import decode_predictions`: extract the predictions class name in the form of tuple of list.
+*  `preprocess_input` accepts a batch of images, hence the batch needs to be defined as [num. of images in batch, **dimensions of each image], for example if you have 5 images of (299, 299, 3), the batch of images should be `X = numpy.array([5, 299, 299, 3])`.
+* Steps:
+    * Initialize `Xception` model.
+    * Pass the set of unprocessed images to `preprocess_input` to get the processed images `X`.
+    * Predict using `model.predict(X)` to get an array of predictions: Each row is a prediction for an image, each column represents the prediction classes. E.g. a prediction of shape (1,1000) means a single image prediction of 1000 possible image classes.
+
+### 8.4 Convolutional Neural Network
+* What is Convolutional Neural Network?: 
+> A convolutional neural network, also know as CNN or ConvNet, is a feed-forward neural network that is generally used to analyze viusal images by processing data with grid-like topology. A CNN is used to detect and classify objects in an image. In CNN, every image is represented in the form of an array of pixel values.
+The convolution operation forms the basis of any CNN. In convolution operation, the arrays are multiplied element-wise, and the dot product is summed to create a new array, which represents `Wx`.
+* Layers in a Convolutional Neural Network: A Convolution neural network has multiple hidden layers that help in extracting information from an image. The four important layers in CNN are:
+    * Convolution layer
+    * Activation function layer
+    * Pooling layer
+    * Fully connected layer (also called Dense layer)
+* Convolution layer: 
+    * Extracts valuable features from an image. A convolution layer has several filters that perform the convolution operation. Every image is considered as a matrix of pixel values.
+    * Consider a black and white image of 5x5 size whose pixel values are either 0 or 1 and also a filter matrix with a dimension of 3x3. Next, slide the filter matrix over the image and compute the dot product to get the convolved feature matrix.
+* Activation function layer:
+    * Once the feature maps are extracted, the next step is to move them to a activation function layer. There are different activation functions such as ReLU, Sigmoid, Softmax etc.
+    * **ReLU (Rectified Linear Unit)** is an activation function which performs an element-wise operation and sets all the negative pixels to 0. It introduces non-linearity to the network, and the generated output is a rectified feature map. The relu function is: $f(x) = \max(0,x)$.
+* Pooling layer:
+    * A down-sampling operation that reduces the dimensionality of the feature map. The rectified feature map goes through a pooling layer to generate a pooled feature map.
+    * Imagine a rectified feature map of size 4x4 goes through a max pooling filter of 2x2 size with stride of 2. In this case, the resultant pooled feature map will have a pooled feature map of 2x2 size where each value will represent the maximum value of each stride.
+    * The pooling layer uses various filters to identify different parts of the image like edges, shapes etc.
+* Fully Connected layer (Dense layer):
+    * The next step in the process is called flattening. Flattening is used to convert all the resultant 2D arrays from pooled feature maps into a single linear vector. This flattened vector is then fed as input to the fully connected layer to classify the image.
+* Convolutional Neural Networks in a nutshell
+    * The pixels from the image are fed to the convolutional layer that performs the convolution operation.
+    * It results in a convolved map.
+    * The convolved map is applied to a ReLU function to generate a rectified feature map.
+    * The image is processed with multiple convolutions and ReLU layers for locating the features.
+    * Different pooling layers with various filters are used to identify specific parts of the image.
+    * The pooled feature map is flattened and fed to a fully connected layer to get the final output.
+* References: [Learn CNN in the browser](https://poloclub.github.io/cnn-explainer/).
