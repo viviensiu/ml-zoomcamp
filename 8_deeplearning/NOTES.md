@@ -212,9 +212,146 @@ for lr in lrs:
 * Instead of saving models from the whole history, we only want to save the best models so far at that epoch.
 * Hence, the solution here is to add checkpoints that would save the current model if it's the <i>best model so far</i>, a.k.a up till the current epoch. 
 * In Keras, `ModelCheckpoint` callback is used with training the model to save a model or weights in a checkpoint file at some interval, so the model or weights can be loaded later to continue the training from the state saved or to use for deployment.
+* Checkpoint conditions may include reaching the best performance.
 * Classes, function, and attributes:
     * `keras.callbacks.ModelCheckpoint`: ModelCheckpoint class from keras callbacks api
     * `filepath`: path to save the model file.
     * `monitor`: the metric name to monitor.
     * `save_best_only`: only save when the model is considered the best according to the metric provided in monitor.
     * `model`: overwrite the save file based on either maximum or the minimum scores according the metric provided in monitor.
+
+### 8.8 Adding More Layers
+* It is also possible to add more layers between the `vector representation layer`(`base_model`) and the `output layer` to perform intermediate processing of the vector representation. 
+* These layers are the same dense layers as the output, but the difference is that these layers use `relu` activation function for non-linearity.
+* Like learning rates, we should also experiment with different values of inner layer sizes:
+```python
+# Function to define model by adding new dense layer
+def make_model(learning_rate=0.01, size_inner=100): # default layer size is 100
+    base_model = Xception(weights='imagenet',
+                          include_top=False,
+                          input_shape=(150,150,3))
+
+    base_model.trainable = False
+    
+    #########################################
+    
+    inputs = keras.Input(shape=(150,150,3))
+    base = base_model(inputs, training=False)
+    vectors = keras.layers.GlobalAveragePooling2D()(base)
+    # add `inner` layer with relu activation
+    inner = keras.layers.Dense(size_inner, activation='relu')(vectors) # activation function 'relu'
+    # change `outputs` layer to accept inner layer as input instead of `vectors` layer
+    outputs = keras.layers.Dense(10)(inner)
+    model = keras.Model(inputs, outputs)
+    
+    #########################################
+    
+    optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+    loss = keras.losses.CategoricalCrossentropy(from_logits=True)
+
+    # Compile the model
+    model.compile(optimizer=optimizer,
+                  loss=loss,
+                  metrics=['accuracy'])
+    
+    return model
+```
+* Next, train the model with different sizes of `inner` layer:
+```python
+# Experiement different number of inner layer with best learning rate
+# Note: We should've added the checkpoint for training but for simplicity we are skipping it
+learning_rate = 0.001
+
+scores = {}
+
+# List of inner layer sizes
+sizes = [10, 100, 1000]
+
+for size in sizes:
+    print(size)
+    
+    model = make_model(learning_rate=learning_rate, size_inner=size)
+    history = model.fit(train_ds, epochs=10, validation_data=val_ds)
+    scores[size] = history.history
+    
+    print()
+    print()
+```
+* **Note**: It may not always be possible that the model improves. Adding more layers mean introducing complexity in the model, which may not be recommended in some cases.
+* In the video, adding `inner` layer did not improve the model.
+
+### 8.9 Regularization and Dropout
+* Training the same data set over more and more epochs would result in overfitting the data.
+* To mitigate this, the `dropout` method is used.
+* `Dropout` involves randomly removing some neurons during each epoch so the model do not learn any information about these dropped neurons.
+* It is akin to "hide" partial information on the dataset so the model do not overfit on the training data and unable to generalise.
+* Code example to apply `drop` layer in the neural network architecture, notice that learning rate `0.01` and layer size of `100` is used here:
+```python
+# Function to define model by adding new dense layer and dropout
+def make_model(learning_rate=0.01, size_inner=100, droprate=0.5):
+    base_model = Xception(weights='imagenet',
+                          include_top=False,
+                          input_shape=(150,150,3))
+
+    base_model.trainable = False
+    
+    #########################################
+    
+    inputs = keras.Input(shape=(150,150,3))
+    base = base_model(inputs, training=False)
+    vectors = keras.layers.GlobalAveragePooling2D()(base)
+    inner = keras.layers.Dense(size_inner, activation='relu')(vectors)
+    # droprate: probability to drop neurons
+    drop = keras.layers.Dropout(droprate)(inner) # add dropout layer
+    outputs = keras.layers.Dense(10)(drop)
+    model = keras.Model(inputs, outputs)
+    
+    #########################################
+    
+    optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+    loss = keras.losses.CategoricalCrossentropy(from_logits=True)
+
+    # Compile the model
+    model.compile(optimizer=optimizer,
+                  loss=loss,
+                  metrics=['accuracy'])
+    
+    return model
+
+
+# Create checkpoint to save best model for version 3
+filepath = './xception_v3_{epoch:02d}_{val_accuracy:.3f}.h5'
+checkpoint = keras.callbacks.ModelCheckpoint(filepath=filepath,
+                                             save_best_only=True,
+                                             monitor='val_accuracy',
+                                             mode='max')
+
+# Set the best values of learning rate and inner layer size based on previous experiments
+learning_rate = 0.001
+size = 100
+
+# Dict to store results
+scores = {}
+
+# List of dropout rates
+droprates = [0.0, 0.2, 0.5, 0.8]
+
+for droprate in droprates:
+    print(droprate)
+    
+    model = make_model(learning_rate=learning_rate,
+                       size_inner=size,
+                       droprate=droprate)
+    
+    # Train for longer (epochs=30) cause of dropout regularization
+    history = model.fit(train_ds, epochs=30, validation_data=val_ds, callbacks=[checkpoint])
+    scores[droprate] = history.history
+    
+    print()
+    print()
+```
+* **Note**: Because we introduce dropout in the neural networks, we will need to train our model for longer, hence, number of `epochs` is set to `30`.
+* Also take note that when you analyse the training and validation accuracy plots, the numbers will oscillate due to dropout being added. A single epoch with a high accuracy may only be due to chance, hence to choose the best hyperparameter, consider the converged values instead and the difference between training and validation accuracies. 
+* Classes, functions, attributes:
+    * `tf.keras.layers.Dropout()`: dropout layer to randomly sets input units (i.e, nodes) to 0 with a frequency of rate at each epoch during training.
+    * `rate`: argument to set the fraction of the input units to drop, it is a value of float between 0 and 1.
