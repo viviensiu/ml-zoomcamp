@@ -155,7 +155,7 @@ history = model.fit(train_ds, epochs=10, validation_data=val_ds)
     * `history.history`: history attribute is a dictionary recording loss and metrics values (accuracy in our case) for at each epoch.
 * References: [Keras Optimizers](https://keras.io/api/optimizers/)
 
-### 8.6 Learning Rate
+### 8.6 Adjusting the Learning Rate
 * It's a tuning parameter in an optimization function that determines the **step size** (how big or small) at each iteration while moving toward a mininum of a loss function.
 * We can experiement with different learning rates to find the optimal value where the model has best results. In order to try different learning rates, we should define a function to create a function first, for instance:
 ```python
@@ -207,3 +207,14 @@ for lr in lrs:
 ```
 * Visualizing the training and validation accuracies help us to determine which learning rate value is the best for for the model. One typical way to determine the best value is by looking at the **gap between training and validation accuracy**. The **smaller gap** indicates the optimal value of the learning rate, i.e. less overfitting.
 
+### 8.7 Model Checkpointing
+* When training the model, you may notice that the validation accuracies oscillate from one epoch to another.
+* Instead of saving models from the whole history, we only want to save the best models so far at that epoch.
+* Hence, the solution here is to add checkpoints that would save the current model if it's the best model ~so far~, a.k.a up till the current epoch. 
+* In Keras, `ModelCheckpoint` callback is used with training the model to save a model or weights in a checkpoint file at some interval, so the model or weights can be loaded later to continue the training from the state saved or to use for deployment.
+* Classes, function, and attributes:
+    * `keras.callbacks.ModelCheckpoint`: ModelCheckpoint class from keras callbacks api
+    * `filepath`: path to save the model file.
+    * `monitor`: the metric name to monitor.
+    * `save_best_only`: only save when the model is considered the best according to the metric provided in monitor.
+    * `model`: overwrite the save file based on either maximum or the minimum scores according the metric provided in monitor.
