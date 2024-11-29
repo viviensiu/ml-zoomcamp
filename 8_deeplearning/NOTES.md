@@ -210,7 +210,7 @@ for lr in lrs:
 ### 8.7 Model Checkpointing
 * When training the model, you may notice that the validation accuracies oscillate from one epoch to another.
 * Instead of saving models from the whole history, we only want to save the best models so far at that epoch.
-* Hence, the solution here is to add checkpoints that would save the current model if it's the best model ~so far~, a.k.a up till the current epoch. 
+* Hence, the solution here is to add checkpoints that would save the current model if it's the <i>best model so far</i>, a.k.a up till the current epoch. 
 * In Keras, `ModelCheckpoint` callback is used with training the model to save a model or weights in a checkpoint file at some interval, so the model or weights can be loaded later to continue the training from the state saved or to use for deployment.
 * Classes, function, and attributes:
     * `keras.callbacks.ModelCheckpoint`: ModelCheckpoint class from keras callbacks api
