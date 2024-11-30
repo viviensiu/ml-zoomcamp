@@ -281,7 +281,7 @@ for size in sizes:
 * In the video, adding `inner` layer did not improve the model.
 
 ### 8.9 Regularization and Dropout
-* Training the same data set over more and more epochs would result in overfitting the data.
+* Training the same data set over more and more epochs would result in overfitting the data as the model may associate some specific patterns from the dataset with the target and unable to generalise, e.g. t-shirt with round logos.
 * To mitigate this, the `dropout` method is used.
 * `Dropout` involves randomly removing some neurons during each epoch so the model do not learn any information about these dropped neurons.
 * It is akin to "hide" partial information on the dataset so the model do not overfit on the training data and unable to generalise.
@@ -355,3 +355,31 @@ for droprate in droprates:
 * Classes, functions, attributes:
     * `tf.keras.layers.Dropout()`: dropout layer to randomly sets input units (i.e, nodes) to 0 with a frequency of rate at each epoch during training.
     * `rate`: argument to set the fraction of the input units to drop, it is a value of float between 0 and 1.
+
+### 8.10 Data Augmentation
+* Other than using `Dropout` to increase model robustness, we could also add more data to our training data.
+* Data augmentation is a process of artifically increasing the amount of data by generating new images from existing images. This includes adding minor alterations to images by flipping, rotating (positive value = clockwise direction), shifting (positive value = shift upwards), cropping, zoom-in/out, shearing (pull up/down a corner of image), adding brightness and/or contrast, add black patches, and many more.
+* You could perform one or more augmentations on an image.
+* Keras `ImageDataGenerator` class has many parameters for data augmentation that we can use for generating data. Important thing to remember that the **data augmentation should only be implemented on train data**, not the validation. Here's how we can generate augmented data for training the model:
+```python
+# Create image generator for train data and also augment the images
+train_gen = ImageDataGenerator(preprocessing_function=preprocess_input,
+                               rotation_range=30, # implies [-30, 30] range
+                               width_shift_range=10.0, # implies [-10, 10] range
+                               height_shift_range=10.0, # implies [-10, 10] range
+                               shear_range=10,
+                               zoom_range=0.1,
+                               vertical_flip=True)
+
+train_ds = train_gen.flow_from_directory(directory=train_imgs_dir,
+                                         target_size=(150,150),
+                                         batch_size=32)
+```
+* **Note**: `val_ds` in the notebook only has `mageDataGenerator(preprocessing_function=preprocess_input)` and no transformations.
+* **How to choose augmentations**?
+    * **Use our own judgement**: E.g. looking at the images (both on train and validation), does it make sense to introduce horizontal flip? It is so for clothing but not so for recognising buildings!
+    * **Look at the dataset**, what kind of vairations are there? are objects always center? If so, would it benefit to add rotated or cropped images?
+    * **Augmentations are hyperparameters**: like many other hyperparameters, often times we need to test whether image augmentations are useful for the model or not. Say we add in rotation transformation and train the model, **if the model doesn't improve or have same performance after certain epochs (let's say 20), in that case we don't use it**.
+* **Note**: Usually augmented data required training for longer.
+
+### 8.11 Training a Larger Model
