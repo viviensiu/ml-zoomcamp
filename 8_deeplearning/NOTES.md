@@ -4,6 +4,10 @@
 ### Setup
 * `pipenv install tensorflow`.
 
+### Saturn Cloud Setup 
+* For the purpose of utilising GPU on Saturn Cloud for this module, courtesy of [Saturn Cloud](https://saturncloud.io/).
+* Refer [Setup notes](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/08-deep-learning/01b-saturn-cloud.md). 
+
 ### 8.1 Fashion classification
 * This module would focus on using deep learning to perform multiclass image classification. The deep learning frameworks like TensorFlow and Keras will be implemented on clothing dataset to classify images of t-shirts.
 * Dataset used: [clothing dataset (small)](https://github.com/alexeygrigorev/clothing-dataset-small) which contains 10 of the fashion classification classes. Use `git clone https://github.com/alexeygrigorev/clothing-dataset-small.git` to clone this dataset.
