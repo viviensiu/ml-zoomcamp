@@ -394,3 +394,51 @@ train_ds = train_gen.flow_from_directory(directory=train_imgs_dir,
 * **Note**: Save the `checkpoints` as different **versions** to associate the versions with the hyperparameters used at a specific version. 
 * **Note**: As always, pick the model that gives a great validation accuracy plus the smallest difference between training and validation accuracy.
 * This gives us the best results than any previous experiments.
+
+### 8.12 Using the Model
+* Earlier we used **h5 format** to save our model when creating the checkpoint. The **HDF5 format** contains the model's architecture, weights values, and `compile()` information. The saved model can be loaded and used for prediction with `keras.models.load_model(path/to/saved_model)` method.
+* To evaluate the model and make prediction on test data, we'll need to create the same preprocessing steps for the image as we have done with train and validation data:
+```python
+# Create image generator for test data
+test_gen = ImageDataGenerator(preprocessing_function=preprocess_input)
+
+# Path of test images directory
+test_imgs_dir = '../input/mlzoomcampimageclassification/zoomcamp-image-classification/clothing-dataset-small/test'
+
+# Load in test images to generator
+test_ds = test_gen.flow_from_directory(directory=test_imgs_dir,
+                                       target_size=(299,299),
+                                       batch_size=32,
+                                       shuffle=False)
+
+# Path of an image to make predictions
+img_path = 'path/to/image'
+# Load image
+img = load_img(img_path, target_size=(299,299))
+
+# Convert image to numpy array
+x = np.array(img)
+# Add batch dimension to the image
+X = np.array([x])
+# Preprocess the image 
+X = preprocess_input(X)
+```
+* The model performance can be evaluated on test data with `model.evaluate(test_ds)` and the prediction on the test image can be made using the method `model.predict(X)`. We can then `zip` the class names and prediction to see the likelihood.
+* The likelihood tells us how likely the image is predicted to be in a particular class. Note that we did not use `softmax` hence the predictions are logits instead of probabilities. The largest logit represents the **greatest likelihood** of this image belonging to this particular class.
+* Classes, functions, attributes:
+    * `keras.models.load_model()`: method to load saved model
+    * `model.evaluate()`: method to evaluate the performance of the model based on the evaluation metrics
+    * `model.predict()`: method to make predictions of output depending on the input
+
+### 8.13 Summary
+* We can use **pre-trained models** for general image classification.
+* **Convolutional layers** let us turn an image into a vector.
+* **Dense** layers use the vector to make the predictions.
+* Instead of training a model from scratch, we can use **transfer learning** and re-use already trained convolutional layers.
+* First, train a small model (150x150) before training a big one (299x299).
+* **Learning rate** - how fast the model trains. Fast learner aren't always best ones.
+* We can save the best model using **callbacks** and **checkpointing**.
+* To **avoid overfitting**, use **dropout** and **augmentation**.
+
+### Homework
+* Module 8 [homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/08-deep-learning/homework.md)

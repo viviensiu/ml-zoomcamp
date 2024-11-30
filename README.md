@@ -7,7 +7,7 @@ Repo for my ML-zoomcamp course materials.
 * [Course homework page](https://courses.datatalks.club/ml-zoomcamp-2024/).
 
 ### Repo guidelines
-* Organised by modules.
+* Organised by modules. **No module 7** as this is allocated for midterm project.
 * Each module contains a NOTES.md for self-written notes for the module.
 
 ### Credits
