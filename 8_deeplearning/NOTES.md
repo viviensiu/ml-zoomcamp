@@ -446,7 +446,3 @@ X = preprocess_input(X)
 
 ### Homework
 * Module 8 [homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/08-deep-learning/homework.md)
-
-### Community Notes
-* [Kwang Yang's Notes on PyTorch](https://github.com/kwangyy/ml-zoomcamp/blob/main/Week%208%20Code/Week%208%20-%20Deep%20Learning%20but%20PyTorch.ipynb).
-* [Gradio demonstration with Huggingface Space](https://github.com/yusyel/guides/tree/master/huggingface#gradio-demonstration-with-huggingface-space).
