@@ -360,7 +360,8 @@ for droprate in droprates:
 * Other than using `Dropout` to increase model robustness, we could also add more data to our training data.
 * Data augmentation is a process of artifically increasing the amount of data by generating new images from existing images. This includes adding minor alterations to images by flipping, rotating (positive value = clockwise direction), shifting (positive value = shift upwards), cropping, zoom-in/out, shearing (pull up/down a corner of image), adding brightness and/or contrast, add black patches, and many more.
 * You could perform one or more augmentations on an image.
-* Keras `ImageDataGenerator` class has many parameters for data augmentation that we can use for generating data. Important thing to remember that the **data augmentation should only be implemented on train data**, not the validation. Here's how we can generate augmented data for training the model:
+* Keras `ImageDataGenerator` class has many parameters for data augmentation that we can use for generating data. Important thing to remember that the **data augmentation should only be implemented on train data**, not the validation, because validation acts as unseen data and we do not transform unseen data used for predictions in reality! 
+* Here's how we can generate augmented data for training the model:
 ```python
 # Create image generator for train data and also augment the images
 train_gen = ImageDataGenerator(preprocessing_function=preprocess_input,
@@ -375,7 +376,7 @@ train_ds = train_gen.flow_from_directory(directory=train_imgs_dir,
                                          target_size=(150,150),
                                          batch_size=32)
 ```
-* **Note**: `val_ds` in the notebook only has `mageDataGenerator(preprocessing_function=preprocess_input)` and no transformations.
+* **Note**: `val_ds` in the notebook only has `ImageDataGenerator(preprocessing_function=preprocess_input)` and no transformations.
 * **How to choose augmentations**?
     * **Use our own judgement**: E.g. looking at the images (both on train and validation), does it make sense to introduce horizontal flip? It is so for clothing but not so for recognising buildings!
     * **Look at the dataset**, what kind of vairations are there? are objects always center? If so, would it benefit to add rotated or cropped images?
@@ -383,3 +384,13 @@ train_ds = train_gen.flow_from_directory(directory=train_imgs_dir,
 * **Note**: Usually augmented data required training for longer.
 
 ### 8.11 Training a Larger Model
+* Using a smaller model (image size is only (150 x 150)) speeds up the training process where the focus is on hyperparameter-tuning and increasing the robustness of the model.
+* Once we're happy with the model's performance, we could increase the image size to (299 x 299) to train a larger model.
+* Here we also:
+    * Reduced the amount of data augmentation parameters, 
+    * Lowered the learning rate and increased the `epochs`. 
+    * Added checkpoints
+* **Note**: Use a `divide-and-conquer` approach and add in hyperparameters one-by-one instead of using multiple at one go. This helps to isolate those hyperparameters that do not improve performance and exclude them from the final model.
+* **Note**: Save the `checkpoints` as different **versions** to associate the versions with the hyperparameters used at a specific version. 
+* **Note**: As always, pick the model that gives a great validation accuracy plus the smallest difference between training and validation accuracy.
+* This gives us the best results than any previous experiments.
