@@ -82,12 +82,18 @@ pip install https://github.com/alexeygrigorev/tflite-aws-lambda/raw/main/tflite/
 ```
 pip install https://github.com/alexeygrigorev/tflite-aws-lambda/blob/main/tflite/tflite_runtime-2.14.0-cp310-cp310-linux_x86_64.whl?raw=true
 ```
-The wheel file above is for Python 3.10. Check other available compiled TF lite versions here.
+The wheel file above is for Python 3.10. Check other available compiled TF lite versions [here](https://github.com/alexeygrigorev/tflite-aws-lambda/tree/main/tflite).
 
 * Not correct - won't work:
 ```
 pip install https://github.com/alexeygrigorev/tflite-aws-lambda/blob/main/tflite/tflite_runtime-2.14.0-cp310-cp310-linux_x86_64.whl
 ```
 If the file is incorrect, you'll get an error message like that:
-
+```
 zipfile.BadZipFile: File is not a zip file
+```
+
+**ENTRYPOINT vs CMD**
+* This link explains the difference between them: [https://stackoverflow.com/a/34245657](https://stackoverflow.com/a/34245657).
+* `ENTRYPOINT` specifies a command that will always be executed when the container starts. `CMD` specifies **arguments** that will be fed to the `ENTRYPOINT`.
+* In case of the lambda base pacakge, the authors already specified the entrypoint and we only need to overwrite the arguments passed to the entrypoint,
