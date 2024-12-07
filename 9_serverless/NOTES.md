@@ -100,15 +100,15 @@ zipfile.BadZipFile: File is not a zip file
 
 ### 9.6 Creating the AWS Lambda Function
 * Goal: Deploy the previously created Docker Container to AWS Lambda.
-* **Pushing the Docker Image to AWS**
-        * We want to publish the container image to AWS ECR (Elastic Container Registry). Before publish we need to create a repo to contain all our published images.
-        * Install aws cli using `pip install awscli`.
-        * You need to run aws configure if it's the first time.
-        * `aws ecr create-repository --repository-name clothing-tflite-images`
-        * It will output some information, note down `repositoryUri`.
-        * Login to your AWS and under Container Services, you can see the repo you just created.
-        * Login to push your images to the repo: `aws ecr get-login --no-include-email`, copy the output which begins with `docker login`.
-        * Execute the copied login.
+* **Pushing the Docker Image to AWS**:
+    * We want to publish the container image to AWS ECR (Elastic Container Registry). Before publish we need to create a repo to contain all our published images.
+    * Install aws cli using `pip install awscli`.
+    * You need to run aws configure if it's the first time.
+    * `aws ecr create-repository --repository-name clothing-tflite-images`
+    * It will output some information, note down `repositoryUri`.
+    * Login to your AWS and under Container Services, you can see the repo you just created.
+    * Login to push your images to the repo: `aws ecr get-login --no-include-email`, copy the output which begins with `docker login`.
+    * Execute the copied login.
     * **NOTE**, doing `$(aws ecr get-login --no-include-email)` would get cmd line to execute the output automatically, which saves you the hassle of copy-pasting.
     * Setup a file with these commands:
     ```bash
