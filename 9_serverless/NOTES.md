@@ -96,4 +96,49 @@ zipfile.BadZipFile: File is not a zip file
 **ENTRYPOINT vs CMD**
 * This link explains the difference between them: [https://stackoverflow.com/a/34245657](https://stackoverflow.com/a/34245657).
 * `ENTRYPOINT` specifies a command that will always be executed when the container starts. `CMD` specifies **arguments** that will be fed to the `ENTRYPOINT`.
-* In case of the lambda base pacakge, the authors already specified the entrypoint and we only need to overwrite the arguments passed to the entrypoint,
+* In case of the lambda base pacakge, the authors already specified the entrypoint and we only need to overwrite the arguments passed to the entrypoint.
+
+### 9.6 Creating the AWS Lambda Function
+* Goal: Deploy the previously created Docker Container to AWS Lambda.
+* **Pushing the Docker Image to AWS**
+* We want to publish the container image to AWS ECR (Elastic Container Registry). Before publish we need to create a repo to contain all our published images.
+* Install aws cli using `pip install awscli`.
+* You need to run aws configure if it's the first time.
+* `aws ecr create-repository --repository-name clothing-tflite-images`
+* It will output some information, note down `repositoryUri`.
+* Login to your AWS and under Container Services, you can see the repo you just created.
+* Login to push your images to the repo: `aws ecr get-login --no-include-email`, copy the output which begins with `docker login`.
+* Execute the copied login.
+* **NOTE**, doing `$(aws ecr get-login --no-include-email)` would get cmd line to execute the output automatically, which saves you the hassle of copy-pasting.
+* Setup a file with these commands:
+```bash
+ACCOUNT=
+REGION=
+REGISTRY=
+PREFIX=${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/${REGISTRY}
+TAG=
+REMOTE_URL=${PREFIX}:${TAG}
+```
+* Make sure the image you want to push shares the same tag as `TAG` above.
+* Copy-paste and run the commands above to initialise the env variables. Then run `docker push ${REMOTE_URI}`.
+* Check if the image is now in your AWS.
+* **Setting up the Lambda function**
+* In AWS Web Console, go to Lambda.
+* Click on `Create function`:
+    * `Container Image`.
+    * Fill in `Function name`, use `Browse images` to pick the image uploaded.
+    * Keep architecture as `x86_64`.
+    * Click `create function`.
+* Edit `Configuration` to extend the default timeout of 3 seconds:
+    * Under `General Configuration`, extend timeout to 30s, and memory to 1024MB (1GB).
+* Test the created function by clicking on `Test event`, then use this JSON input:
+```
+{
+    "url": "the-pants-url"
+}
+```
+* You should be able to see the JSON response with `"pant": highest probability value predicted`.
+* For **AWS Lambda Pricing**, refer [here](https://aws.amazon.com/lambda/pricing/).
+
+### 9.7 API Gateway: Exposing the Lambda Function
+
