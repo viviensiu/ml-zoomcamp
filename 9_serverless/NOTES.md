@@ -166,4 +166,7 @@ zipfile.BadZipFile: File is not a zip file
 * Deploy cats vs dogs and other Keras models with AWS Lambda
 * AWS Lambda is also good for other libraries, not just Tensorflow. You can deploy Scikit-Learn and XGBoost models with it as well.
 
+### Homework
+* Module 9 [homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/09-serverless/homework.md)
+
 
