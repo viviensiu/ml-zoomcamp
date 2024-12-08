@@ -137,8 +137,33 @@ zipfile.BadZipFile: File is not a zip file
         "url": "the-pants-url"
     }
     ```
-    * You should be able to see the JSON response with `"pant": highest probability value predicted`.
+    * You should be able to see the JSON response with `"pants": highest probability value predicted`.
 * For **AWS Lambda Pricing**, refer [here](https://aws.amazon.com/lambda/pricing/).
 
 ### 9.7 API Gateway: Exposing the Lambda Function
+* Goal: Expose the Lambda function as a web service using AWS API Gateway, to allow event-triggered invocation of the clothing prediction Lambda Function we created in module 9.6.
+* Go to AWS API Gateway, click on `Create API`:
+    * Select `REST API` > `New API`
+    * Fill in `API name`, `Description`, `Endpoint Type` keep as `Regional`. Click `Create API`.
+    * Under `Actions` > `Create Resource` > `Resource Name` = `predict`. Click `Create Resource`.
+    * Under `Actions` > `Create Method` > pick `POST` method, fill in `Lambda Function` and click create.
+    * Click on `Test link`, under `Request Body`, copy-paste:
+    ```
+    {
+        "url": "the-pants-url"
+    }
+    ```
+    * Click test! You should get a response body that tells you the prediction results from the lambda function.
+* To deploy API, go to `Actions` > `Deploy API` to expose it. 
+    * `Stage name`: `test`, then click deploy.
+    * It should provide you an `Invoke URL` which you could use for API Gateway.
+* In your local testing script, change the url for `requests.post(url, json=data)` to this `Invoke URL` value and append the resource name which is `/predict` to the end of this url.
+* Execute the testing script and you should get a response if the setup is correct.
+* **CAUTION**: Note that you could also send something to the exposed gateway and this should not be done at work, i.e. you need to limit the exposure of this gateway to only actual users and not make it publicly available.
+
+### Explore more
+* Try similar serverless services from Google Cloud and Microsoft Azure
+* Deploy cats vs dogs and other Keras models with AWS Lambda
+* AWS Lambda is also good for other libraries, not just Tensorflow. You can deploy Scikit-Learn and XGBoost models with it as well.
+
 
