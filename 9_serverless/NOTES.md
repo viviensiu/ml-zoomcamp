@@ -161,3 +161,10 @@ zipfile.BadZipFile: File is not a zip file
 * Execute the testing script and you should get a response if the setup is correct.
 * **CAUTION**: Note that you could also send something to the exposed gateway and this should not be done at work, i.e. you need to limit the exposure of this gateway to only actual users and not make it publicly available.
 
+### Explore More
+* Try similar serverless services from Google Cloud and Microsoft Azure
+* Deploy cats vs dogs and other Keras models with AWS Lambda
+* AWS Lambda is also good for other libraries, not just Tensorflow. You can deploy Scikit-Learn and XGBoost models with it as well
+
+### Homework
+* Module 9 [homework questions](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/cohorts/2024/09-serverless/homework.md)
