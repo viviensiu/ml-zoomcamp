@@ -10,3 +10,5 @@
 !.elasticbeanstalk/*.global.yml
 8_deeplearning/data/*
 9_serverless/model_2024_hairstyle.keras
+9_serverless/hairstyle-2024-model.tflite
+*.jpeg

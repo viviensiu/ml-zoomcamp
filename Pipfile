@@ -9,7 +9,6 @@ flask = "*"
 gunicorn = "*"
 scikit-learn = "*"
 requests = "*"
-tensorflow = "*"
 pillow = "*"
 
 [dev-packages]
