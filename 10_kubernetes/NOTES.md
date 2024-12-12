@@ -123,5 +123,52 @@
     ```
 * Bash script to create custom tf-serving-protobuf and compile: [https://github.com/alexeygrigorev/tensorflow-protobuf/blob/main/tf-serving-proto.sh](https://github.com/alexeygrigorev/tensorflow-protobuf/blob/main/tf-serving-proto.sh).
 
+### 10.4 Docker Compose
+* Docker Compose is a tool that help us to define and share multi-container applications. With Compose, we can create a YAML file to define the services (in our case it is `gateway` service and `clothing-model` model) and with a single command, we can spin everything up inside the YAML file or tear it all down with just one command. Docker compose is very useful the test the applications locally.
+* Instead of mapping the volume, port, and run the docker container in the terminal for our tf-serving model (`clothing-model`), we want to create docker image and put everything in there. For this we want to create docker image by the name `image-model.dockerfile`:
+    ```bash
+    FROM tensorflow/serving:2.7.0
+
+    # Copy model in the image
+    COPY clothing-model /models/clothing-model/1
+    # Specify environmental variable
+    ENV MODEL_NAME="clothing-model"
+    ```
+* Next we build its image. We need to specify the dockerfile name along with the tag since it's not named `Dockerfile`: 
+    ```bash
+    docker build -t clothing-model:xception-v4-001 -f image-model.dockerfile .
+    ```
+* Next we can run this built image with:
+    ```bash
+    docker run -it --rm -p 8500:8500 clothing-model:xception-v4-001
+    ```
+* Similarly we can do the same thing for our `gateway` service. The file name is `image-gateway.dockerfile`:
+    ```bash
+    FROM python:3.8.12-slim
+
+    RUN pip install pipenv
+
+    # Create working directory in docker image
+    WORKDIR /app
+
+    # Copy Pipfile and Pipfile.lock files in working dir
+    COPY ["Pipfile", "Pipfile.lock", "./"]
+
+    # Install required packages using pipenv
+    RUN pipenv install --system --deploy
+
+    # Copy gateway and protobuf scripts in the working dir
+    COPY ["gateway.py", "protobuf.py", "./"]
+
+    EXPOSE 9696
+
+    ENTRYPOINT ["gunicorn", "--bind=0.0.0.0:9696", "gateway:app"]
+    ```
+    * Build image: `docker build -t clothing-model-gateway:001 -f image-gateway.dockerfile .` 
+    * Run image: `docker run -it --rm -p 9696:9696 clothing-gateway:001`
+*
+
+
+
 
 
