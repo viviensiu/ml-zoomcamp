@@ -166,7 +166,38 @@
     ```
     * Build image: `docker build -t clothing-model-gateway:001 -f image-gateway.dockerfile .` 
     * Run image: `docker run -it --rm -p 9696:9696 clothing-gateway:001`
-*
+* Upon running these two containers and test for prediction, we should expect connection error. This is because the `gateway` service is unable to communicate with `tf-serving` inside `clothing-model`. In order to connect the two containers and work simultaneously we need docker compose. 
+* Docker compose require YAML file which will be executed when run command `docker compose`, usually the file is named as `docker-compose.yaml`:
+    ```bash
+    version: "3.9"
+    services:
+        clothing-model: # tf-serving model
+            image: zoomcamp-10-model:xception-v4-001
+        gateway: # flask gateway service
+            image: zoomcamp-10-gateway:002 # new version
+            environment:
+                - TF_SERVING_HOST=clothing-model:8500 # look for clothing model and port 8500
+            ports: # map host machine with gateway
+            - "9696:9696"
+    ```
+* Now we also need to make slight changes in the `gateway.py` to make the environment variable configurable and assign it to the host. This can be done using: 
+    ```python
+    # the env variable is passed in from the docker-compose.yaml
+    # if env variable 'TF_SERVING_HOST' exists, uses its values
+    # else use 'localhost:8500'
+    host = os.getenv('TF_SERVING_HOST', 'localhost:8500')
+    ```
+* Running the command `docker-compose up` or detached mode `docker-compose up -d` will establish this connection between both images and everything is configured properly we should have the request predictions.
+* We could test if our setup is successful using `python test.py`.
+* Useful commands:
+    * `docker-compose up`: run docker compose.
+    * `docker-compose up -d`: run docker compose in detached mode.
+    * `docker ps`: to see the running containers.
+    * `docker-compose down`: stop the docker compose.
+
+
+
+
 
 
 
