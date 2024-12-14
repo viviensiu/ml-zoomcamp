@@ -195,6 +195,20 @@
     * `docker ps`: to see the running containers.
     * `docker-compose down`: stop the docker compose.
 
+### Introduction to Kubernetes
+* Kubernetes is an open source system for automating deployment scaling and management of containerized applications.
+* [Kubernetes Architecture](https://kubernetes.io/docs/concepts/architecture/):
+    * `Cluster`: Consists of a control plane plus a set of worker machines, called `nodes`, that run containerized applications. Every cluster needs at least one worker node in order to run Pods.
+    * `Nodes`: Think of it as a VM, with one or more pods inside.
+    * `Pods`: Your Docker Containers. One pod = one container.
+    * `Deployment`: Group of pods with the same set of image and configurations.
+    * `Service`: The entrypoint of an application, routes requests to pods depending on current load. For this module, we have 2 services: `gateway service` to handle incoming requests and outgoing response, `model service` to receive gateway requests and respond with predictions back to gateway service. Note that `gateway service` is an external service, while `model service` is internal service.
+    * `external service`: load balancer.
+    * `internal service`: cluster IP.
+    * `ingress`: entrypoint to the cluster.
+    * Depending on traffic, kubernetes could scale up by increasing number of pods. This depends on the kubernetes configurations. This is managed by `Horizontal Pod Autoscaler (HPA)`.
+
+
 
 
 
