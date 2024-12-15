@@ -308,6 +308,7 @@
     * Running `kubectl get service` will give us the list of external and internal services along with their service type and other information.
     * Test the service by port forwarding and specifying the ports: `kubectl port-forward service/ping 8080:80` (using 8080 instead to avoid permission requirement) and `executing curl localhost:8080/ping` should give us the output `PONG`.
 * **Step 6: Setup and use `MetalLB` as external load-balancer**
+    * **Note**: This part is not in the video lecture.
     * Apply MetalLB manifest
     ```bash
     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
@@ -355,7 +356,104 @@
     curl <LB_IP>:80/ping
     ```
 
- 
+### 10.7 Deploying TensorFlow Models to Kubernetes
+* In previous lesson, we only deployed a basic `ping.py` service to Kubernetes which returns "PONG" whenever we invoke this service. Now we will deploy the full set of gateway + clothing model services to Kubernetes. This is based on the `docker-compose.yaml` created in lesson 10.4. 
+* Create a new subfolder `kube-config`.
+* **Step 1: Create deployment for the tf-serving model `model-deployment.yaml`**
+    ```bash
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: tf-serving-clothing-model
+    spec:
+        replicas: 1 # num of pods
+        selector:
+            matchLabels:
+              app: tf-serving-clothing-model
+        template:
+            metadata:
+              labels:
+                app: tf-serving-clothing-model
+            spec:
+                containers:
+                - name: tf-serving-clothing-model
+                image: zoomcamp-10-model:xception-v4-001 # if use kind, make this img available in kind
+                resources:
+                    limits:
+                        memory: "512Mi"
+                        cpu: "0.5"
+                ports:
+                - containerPort: 8500
+    ```
+    * Load the model image to kind: `kind load docker-image clothing-model:xception-v4-001`
+    * Create model deployment: `kubectl apply -f model-deployment.yaml`
+    * Get the running pod id for the model: `kubectl get pod`
+    * Test the model deployment using the pod id: `kubectl port-forward tf-serving-clothing-model-85cd6dsb6-rfvg410m 8500:8500` and run `gateway.py` script to get the predictions.
+* **Step 2: Create service of tf-serving model model-service.yaml**
+    ```bash
+    apiVersion: v1
+    kind: Service
+    metadata:
+        name: tf-serving-clothing-model
+    spec:
+        type: ClusterIP # default service type is always ClusterIP (i.e., internal service)
+        selector:
+            app: tf-serving-clothing-model
+        ports:
+        - port: 8500
+            targetPort: 8500
+    ```
+    * Create model service: `kubectl apply -f mdoel-service.yaml`
+    * Check the model service: `kubectl get service`.
+    * Test the model service: `kubectl port-forward service/tf-serving-clothing-model 8500:8500` and run `gateway.py` for predictions.
+* **Step 3: Create deployment for the gateway gateway-deployment.yaml**
+    ```bash
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+    name: gateway
+    spec:
+    selector:
+        matchLabels:
+        app: gateway
+    template:
+        metadata:
+        labels:
+            app: gateway
+        spec:
+        containers:
+        - name: gateway
+            image: zoomcamp-10-gateway:002
+            resources:
+            limits:
+                memory: "128Mi"
+                cpu: "100m"
+            ports:
+            - containerPort: 9696
+            env: # set the environment variable for model
+            - name: TF_SERVING_HOST
+                value: tf-serving-clothing-model.default.svc.cluster.local:8500 # kubernetes naming convention: <NAME>.default.svc.cluster.local:<PORT>
+    ```
+    * Load the gateway image to kind: `kind load docker-image clothing-model-gateway:002`
+    * Create gateway deployment `kubectl apply -f gateway-deployment.yaml` and get the running pod id `kubectl get pod`
+    * Test the gateway pod: `kubectl port-forward gateway-6b945f541-9gptfd 9696:9696` and execute `test.py` for get predictions.
+* Create service of tf-serving model `gateway-service.yaml`:
+    ```bash
+    apiVersion: v1
+    kind: Service
+    metadata:
+    name: gateway
+    spec:
+        type: LoadBalancer # External service to communicate with client (i.e., LoadBalancer)
+        selector:
+            app: gateway
+        ports:
+        - port: 80 # port of the service
+            targetPort: 9696 # port of load balancer
+    ```
+    * Create gateway service: `kubectl apply -f gateway-service.yaml`
+    * Get service id: `kubectl get service`
+    * Test the gateway service: `kubectl port-forward service/gateway 8080:80` and replace the url on `test.py` to 8080 to get predictions.
 
 
 
