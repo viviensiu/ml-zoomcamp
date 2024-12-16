@@ -455,7 +455,9 @@
     * Get service id: `kubectl get service`
     * Test the gateway service: `kubectl port-forward service/gateway 8080:80` and replace the url on `test.py` to 8080 to get predictions.
 
-
+### 10.8 Deploying to Amazon EKS 
+* **Note**: I did not implement this as I was already quite lost.
+* Refer to [10.8 course notes](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/10-kubernetes/08-eks.md) and [lecture video](https://youtu.be/89jxeddZtC0?si=9rR-dRB76IrgbdrS).
 
 
 
