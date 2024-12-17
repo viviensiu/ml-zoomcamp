@@ -459,7 +459,22 @@
 * **Note**: I did not implement this as I was already quite lost.
 * Refer to [10.8 course notes](https://github.com/DataTalksClub/machine-learning-zoomcamp/blob/master/10-kubernetes/08-eks.md) and [lecture video](https://youtu.be/89jxeddZtC0?si=9rR-dRB76IrgbdrS).
 
+### 10.9 Summary
+In module 10 we covered the following concepts:
+* TF-Serving is a system for deploying TensorFlow models.
+* When using TF-Serving, we need a component for pre-processing.
+* Kubernetes is a container orchestration platform.
+* To deploy something on Kubernetes, we need to specify a deployment and a service.
+* You can use Docker compose and Kind for local experiments.
 
+### 10.10 Explore More
+* Other local Kubernetes: minikube, k3d, k3s, microk8s, EKS Anywhere.
+* [Rancher desktop](https://rancherdesktop.io/).
+* [Docker desktop](https://www.docker.com/products/docker-desktop/).
+* [Lens](https://k8slens.dev/).
+* Many cloud providers have Kubernetes: GCP, Azure, Digital ocean and others. Look for **"Managed Kubernetes"** in your favourite search engine.
+* Deploy the model from previous modules and from your project with Kubernetes.
+* Learn about Kubernetes namespaces. Here we used the default namespace.
 
 
 
